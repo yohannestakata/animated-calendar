@@ -63,12 +63,24 @@ function App() {
                 exit="exit"
               >
                 <header className="relative flex items-center justify-between px-6 pt-6">
-                  <button
-                    className="z-10 cursor-pointer rounded-full p-2 duration-200 ease-out hover:bg-zinc-800"
+                  <motion.button
+                    className="z-10 cursor-pointer rounded-full p-2"
                     onClick={previousMonth}
+                    whileHover={{
+                      backgroundColor: "#3f3f46",
+                      scale: 1.2,
+                    }}
+                    whileTap={{
+                      scale: 1.1,
+                    }}
+                    transition={{
+                      type: "tween",
+                      ease: "easeOut",
+                      duration: 0.1,
+                    }}
                   >
                     <ChevronLeft />
-                  </button>
+                  </motion.button>
                   <motion.span
                     variants={variants}
                     className="absolute inset-0 flex items-center justify-center pt-6 text-lg font-semibold"
@@ -76,12 +88,24 @@ function App() {
                   >
                     {format(month, "MMM yyyy")}
                   </motion.span>
-                  <button
-                    className="z-10 cursor-pointer rounded-full p-2 duration-200 ease-out hover:bg-zinc-800"
+                  <motion.button
+                    className="z-10 cursor-pointer rounded-full p-2"
                     onClick={nextMonth}
+                    whileHover={{
+                      backgroundColor: "#3f3f46",
+                      scale: 1.2,
+                    }}
+                    whileTap={{
+                      scale: 1.1,
+                    }}
+                    transition={{
+                      type: "tween",
+                      ease: "easeOut",
+                      duration: 0.1,
+                    }}
                   >
                     <ChevronRight />
-                  </button>
+                  </motion.button>
 
                   <div
                     className="absolute inset-0"
@@ -138,7 +162,7 @@ function ResizablePannel({ children }: { children: React.ReactNode }) {
   );
 }
 
-const transition = { type: "spring", bounce: 0, duration: 0.25 };
+const transition = { type: "spring", bounce: 0, duration: 0.2 };
 
 const variants = {
   initial: (direction: number) => ({
