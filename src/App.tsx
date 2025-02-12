@@ -87,7 +87,7 @@ function App() {
                     className="absolute inset-0"
                     style={{
                       backgroundImage:
-                        "linear-gradient(to right, #18181 15%, transparent 30%,transparent 70%, #18181 85%)",
+                        "linear-gradient(to right, #18181b 15%, transparent 30%,transparent 70%, #18181b 85%)",
                     }}
                   ></div>
                 </header>
@@ -109,7 +109,7 @@ function App() {
                 >
                   {days.map((day) => (
                     <span
-                      className={`${isSameMonth(month, day) ? "" : "text-zinc-600"} font-semibold`}
+                      className={`${isSameMonth(month, day) ? "" : "text-zinc-700"} font-semibold`}
                       key={format(day, "yyyy-MM-dd")}
                     >
                       {format(day, "dd")}
