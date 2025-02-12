@@ -19,18 +19,25 @@ import useMeasure from "react-use-measure";
 function App() {
   const [direction, setDirection] = useState(1);
   const [monthString, setMonthString] = useState(format(new Date(), "yyyy-MM"));
+  const [isAnimating, setIsAnimating] = useState(false);
   const month = parse(monthString, "yyyy-MM", new Date());
 
   function nextMonth() {
+    if (isAnimating) return;
+
     const nextMonth = addMonths(month, 1);
     setMonthString(format(nextMonth, "yyyy-MM"));
     setDirection(1);
+    setIsAnimating(true);
   }
 
   function previousMonth() {
+    if (isAnimating) return;
+
     const previousMonth = subMonths(month, 1);
     setMonthString(format(previousMonth, "yyyy-MM"));
     setDirection(-1);
+    setIsAnimating(true);
   }
 
   const days = eachDayOfInterval({
@@ -47,6 +54,7 @@ function App() {
               mode="popLayout"
               initial={false}
               custom={direction}
+              onExitComplete={() => setIsAnimating(false)}
             >
               <motion.div
                 key={monthString}
