@@ -68,10 +68,9 @@ function App() {
                     onClick={previousMonth}
                     whileHover={{
                       backgroundColor: "#3f3f46",
-                      scale: 1.2,
                     }}
                     whileTap={{
-                      scale: 1.1,
+                      scale: 0.9,
                     }}
                     transition={{
                       type: "tween",
@@ -93,10 +92,9 @@ function App() {
                     onClick={nextMonth}
                     whileHover={{
                       backgroundColor: "#3f3f46",
-                      scale: 1.2,
                     }}
                     whileTap={{
-                      scale: 1.1,
+                      scale: 0.9,
                     }}
                     transition={{
                       type: "tween",
