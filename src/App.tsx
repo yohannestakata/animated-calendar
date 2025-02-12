@@ -19,7 +19,6 @@ import useMeasure from "react-use-measure";
 function App() {
   const [direction, setDirection] = useState(1);
   const [monthString, setMonthString] = useState(format(new Date(), "yyyy-MM"));
-  const [ref, bounds] = useMeasure();
   const month = parse(monthString, "yyyy-MM", new Date());
 
   function nextMonth() {
@@ -40,94 +39,103 @@ function App() {
   });
 
   return (
-    <MotionConfig transition={{ duration: 0.7, type: "spring", bounce: 0 }}>
+    <MotionConfig transition={transition}>
       <div className="flex h-screen w-screen items-start justify-center pt-16">
-        <div className="relative w-sm overflow-hidden rounded-xl border border-zinc-700">
-          <motion.div
-            animate={{ height: bounds.height > 0 ? bounds.height : "auto" }}
-          >
-            <div ref={ref}>
-              <AnimatePresence
-                mode="popLayout"
-                initial={false}
-                custom={direction}
+        <div className="relative w-sm overflow-hidden rounded-xl border border-zinc-700 bg-zinc-900">
+          <ResizablePannel>
+            <AnimatePresence
+              mode="popLayout"
+              initial={false}
+              custom={direction}
+            >
+              <motion.div
+                key={monthString}
+                initial="initial"
+                animate="medium"
+                exit="exit"
               >
-                <motion.div
-                  key={monthString}
-                  initial="initial"
-                  animate="medium"
-                  exit="exit"
-                >
-                  <header className="relative flex items-center justify-between px-6 pt-6">
-                    <button
-                      className="z-10 cursor-pointer rounded-full p-2 duration-200 ease-out hover:bg-zinc-800"
-                      onClick={previousMonth}
-                    >
-                      <ChevronLeft />
-                    </button>
-                    <motion.span
-                      variants={variants}
-                      className="absolute inset-0 flex items-center justify-center pt-6 text-lg font-semibold"
-                      custom={direction}
-                    >
-                      {format(month, "MMMM yyyy")}
-                    </motion.span>
-                    <button
-                      className="z-10 cursor-pointer rounded-full p-2 duration-200 ease-out hover:bg-zinc-800"
-                      onClick={nextMonth}
-                    >
-                      <ChevronRight />
-                    </button>
-
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        backgroundImage:
-                          "linear-gradient(to right, #09090b 15%, transparent 30%,transparent 70%, #09090b 85%)",
-                      }}
-                    ></div>
-                  </header>
-
-                  <div className="grid grid-cols-7 items-center justify-items-center gap-y-6 px-6 pt-6">
-                    <span className="font-semibold text-zinc-400">Su</span>
-                    <span className="font-semibold text-zinc-400">Mo</span>
-                    <span className="font-semibold text-zinc-400">Tu</span>
-                    <span className="font-semibold text-zinc-400">We</span>
-                    <span className="font-semibold text-zinc-400">Th</span>
-                    <span className="font-semibold text-zinc-400">Fr</span>
-                    <span className="font-semibold text-zinc-400">Sa</span>
-                  </div>
-
-                  <motion.div
+                <header className="relative flex items-center justify-between px-6 pt-6">
+                  <button
+                    className="z-10 cursor-pointer rounded-full p-2 duration-200 ease-out hover:bg-zinc-800"
+                    onClick={previousMonth}
+                  >
+                    <ChevronLeft />
+                  </button>
+                  <motion.span
                     variants={variants}
-                    className="grid grid-cols-7 items-center justify-items-center gap-y-6 p-6"
+                    className="absolute inset-0 flex items-center justify-center pt-6 text-lg font-semibold"
                     custom={direction}
                   >
-                    {days.map((day) => (
-                      <motion.span
-                        className={`${isSameMonth(month, day) ? "" : "text-zinc-600"} font-semibold`}
-                        key={format(day, "yyyy-MM-dd")}
-                        whileHover={{ scale: 1.3, cursor: "pointer" }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        {format(day, "dd")}
-                      </motion.span>
-                    ))}
-                  </motion.div>
+                    {format(month, "MMM yyyy")}
+                  </motion.span>
+                  <button
+                    className="z-10 cursor-pointer rounded-full p-2 duration-200 ease-out hover:bg-zinc-800"
+                    onClick={nextMonth}
+                  >
+                    <ChevronRight />
+                  </button>
+
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      backgroundImage:
+                        "linear-gradient(to right, #18181 15%, transparent 30%,transparent 70%, #18181 85%)",
+                    }}
+                  ></div>
+                </header>
+
+                <div className="grid grid-cols-7 items-center justify-items-center gap-y-6 px-6 pt-6">
+                  <span className="font-semibold text-zinc-400">Sun</span>
+                  <span className="font-semibold text-zinc-400">Mon</span>
+                  <span className="font-semibold text-zinc-400">Tue</span>
+                  <span className="font-semibold text-zinc-400">Wed</span>
+                  <span className="font-semibold text-zinc-400">Thu</span>
+                  <span className="font-semibold text-zinc-400">Fri</span>
+                  <span className="font-semibold text-zinc-400">Sat</span>
+                </div>
+
+                <motion.div
+                  variants={variants}
+                  className="grid grid-cols-7 items-center justify-items-center gap-y-6 p-6"
+                  custom={direction}
+                >
+                  {days.map((day) => (
+                    <span
+                      className={`${isSameMonth(month, day) ? "" : "text-zinc-600"} font-semibold`}
+                      key={format(day, "yyyy-MM-dd")}
+                    >
+                      {format(day, "dd")}
+                    </span>
+                  ))}
                 </motion.div>
-              </AnimatePresence>
-            </div>
-          </motion.div>
+              </motion.div>
+            </AnimatePresence>
+          </ResizablePannel>
         </div>
       </div>
     </MotionConfig>
   );
 }
 
+function ResizablePannel({ children }: { children: React.ReactNode }) {
+  const [ref, bounds] = useMeasure();
+
+  return (
+    <motion.div
+      animate={{ height: bounds.height > 0 ? bounds.height : "auto" }}
+      transition={transition}
+    >
+      <div ref={ref}>{children}</div>
+    </motion.div>
+  );
+}
+
+const transition = { type: "spring", bounce: 0, duration: 0.25 };
+
 const variants = {
   initial: (direction: number) => ({
     x: `${direction * 100}%`,
-    opacity: 0.3,
+    opacity: 0,
   }),
   medium: {
     x: "0%",
@@ -136,7 +144,7 @@ const variants = {
   },
   exit: (direction: number) => ({
     x: `${direction * -100}%`,
-    opacity: 0.3,
+    opacity: 0,
   }),
 };
 
